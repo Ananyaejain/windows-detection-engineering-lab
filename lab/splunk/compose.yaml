@@ -1,0 +1,21 @@
+services:
+  soc-splunk:
+    image: splunk/splunk:10.6.0.5-rhel9
+    container_name: soc-splunk
+    hostname: soc-splunk
+    restart: always
+    mem_limit: 5g
+    ports:
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:9997:9997"
+    environment:
+      SPLUNK_START_ARGS: "--accept-license"
+      SPLUNK_GENERAL_TERMS: "--accept-sgt-current-at-splunk-com"
+      SPLUNK_PASSWORD: "${SPLUNK_PASSWORD:?SPLUNK_PASSWORD must be supplied interactively}"
+    volumes:
+      - splunk_etc:/opt/splunk/etc
+      - splunk_var:/opt/splunk/var
+
+volumes:
+  splunk_etc:
+  splunk_var:

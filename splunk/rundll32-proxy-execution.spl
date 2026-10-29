@@ -1,0 +1,10 @@
+index=windows host=*WIN11* source="WinEventLog:Microsoft-Windows-Sysmon/Operational" ("<EventRecordID>213562</EventRecordID>" OR "<EventRecordID>213567</EventRecordID>")
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)</Data>"
+| rex field=_raw "<Data Name='CommandLine'>(?<CommandLine>[^<]+)</Data>"
+| rex field=_raw "<Data Name='ProcessId'>(?<ProcessId>[^<]+)</Data>"
+| rex field=_raw "<Data Name='ParentImage'>(?<ParentImage>[^<]+)</Data>"
+| rex field=_raw "<Data Name='ParentProcessId'>(?<ParentProcessId>[^<]+)</Data>"
+| rex field=_raw "<Data Name='User'>(?<User>[^<]+)</Data>"
+| rex field=_raw "<EventRecordID>(?<RecordId>[^<]+)</EventRecordID>"
+| sort _time asc
+| table _time, RecordId, Image, CommandLine, ProcessId, ParentImage, ParentProcessId, User

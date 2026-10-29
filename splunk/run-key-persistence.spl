@@ -1,0 +1,9 @@
+index=windows host=*WIN11* source="WinEventLog:Microsoft-Windows-Sysmon/Operational" "<EventID>13</EventID>" "<EventRecordID>279657</EventRecordID>"
+| rex field=_raw "<Data Name='Image'>(?<Image>[^<]+)</Data>"
+| rex field=_raw "<Data Name='EventType'>(?<EventType>[^<]+)</Data>"
+| rex field=_raw "<Data Name='TargetObject'>(?<TargetObject>[^<]+)</Data>"
+| rex field=_raw "<Data Name='Details'>(?<Details>[^<]+)</Data>"
+| rex field=_raw "<Data Name='ProcessId'>(?<ProcessId>[^<]+)</Data>"
+| rex field=_raw "<Data Name='User'>(?<User>[^<]+)</Data>"
+| rex field=_raw "<EventRecordID>(?<RecordId>[^<]+)</EventRecordID>"
+| table _time, RecordId, EventType, Image, TargetObject, Details, ProcessId, User

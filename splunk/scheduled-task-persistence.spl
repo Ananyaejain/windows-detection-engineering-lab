@@ -1,0 +1,11 @@
+index=windows host=*WIN11* source="WinEventLog:Security" "<EventRecordID>44656</EventRecordID>"
+| rex field=_raw "<EventID>(?<EventID>[^<]+)</EventID>"
+| rex field=_raw "<EventRecordID>(?<RecordId>[^<]+)</EventRecordID>"
+| rex field=_raw "<Data Name='TaskName'>(?<TaskName>[^<]+)</Data>"
+| rex field=_raw "<Data Name='SubjectUserName'>(?<User>[^<]+)</Data>"
+| rex field=_raw "<Data Name='ClientProcessId'>(?<ClientPID>[^<]+)</Data>"
+| rex field=_raw "<Data Name='ParentProcessId'>(?<ParentPID>[^<]+)</Data>"
+| rex field=_raw "&lt;Command&gt;(?<Command>[^&]+)&lt;/Command&gt;"
+| rex field=_raw "&lt;Arguments&gt;(?<Arguments>[^&]+)&lt;/Arguments&gt;"
+| rex field=_raw "&lt;StartBoundary&gt;(?<ScheduleStart>[^&]+)&lt;/StartBoundary&gt;"
+| table _time, RecordId, EventID, TaskName, User, ClientPID, ParentPID, ScheduleStart, Command, Arguments

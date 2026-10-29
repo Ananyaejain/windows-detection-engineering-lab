@@ -1,0 +1,10 @@
+index=windows host=*WIN11* source="WinEventLog:Microsoft-Windows-PowerShell/Operational" ("<EventRecordID>10024</EventRecordID>" OR "<EventRecordID>10025</EventRecordID>" OR "<EventRecordID>10027</EventRecordID>")
+| rex field=_raw "<EventID>(?<EventID>[^<]+)</EventID>"
+| rex field=_raw "<EventRecordID>(?<RecordId>[^<]+)</EventRecordID>"
+| rex field=_raw "<Data Name='Command Name'>(?<Command>[^<\r\n]+)</Data>"
+| rex field=_raw "(?ms)<Data Name='ScriptBlockText'>(?<ScriptBlockText>.*?)</Data>"
+| rex field=_raw "(?ms)<Data Name='Payload'>(?<Payload>.*?)</Data>"
+| eval Activity=case(RecordId=="10024", "Registry Payload Read (Get-ItemProperty)", RecordId=="10025", "In-Memory ScriptBlock Execution (4104)", RecordId=="10027", "Dynamic Invocation (Invoke-Expression)")
+| eval Payload_Details=coalesce(ScriptBlockText, Payload)
+| sort _time asc
+| table _time, RecordId, EventID, Activity, Payload_Details

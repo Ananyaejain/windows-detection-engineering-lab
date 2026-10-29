@@ -1,0 +1,28 @@
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+
+# Editor metadata
+.vscode/
+.idea/
+*.swp
+*~
+
+# Temporary/local working files
+tmp/
+*.tmp
+.local/
+
+# Virtual-machine and installation media
+*.iso
+*.qcow2
+*.vdi
+*.vmdk
+
+# Secrets and environment files
+.env
+.env.*
+secrets/
+
+# Explicit generated scratch data only
+generated/

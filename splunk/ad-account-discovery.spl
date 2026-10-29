@@ -1,0 +1,6 @@
+index=windows host=*WIN11* source="WinEventLog:Microsoft-Windows-PowerShell/Operational" "<EventRecordID>10133</EventRecordID>"
+| rex field=_raw "<EventID>(?<EventID>[^<]+)</EventID>"
+| rex field=_raw "<EventRecordID>(?<RecordId>[^<]+)</EventRecordID>"
+| rex field=_raw "Execution ProcessID='(?<ProcessID>[^']+)'"
+| rex field=_raw "(?ms)<Data Name='ScriptBlockText'>(?<ScriptBlockText>.*?)</Data>"
+| table _time, RecordId, EventID, ProcessID, ScriptBlockText

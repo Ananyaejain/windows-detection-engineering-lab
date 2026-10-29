@@ -1,0 +1,84 @@
+<Sysmon schemaversion="4.91">
+  <HashAlgorithms>SHA256,IMPHASH</HashAlgorithms>
+  <EventFiltering>
+    <!-- Event 1: ProcessCreate - ALL -->
+    <RuleGroup name="ProcessCreate_All" groupRelation="or">
+      <ProcessCreate onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 2: FileCreateTime - ALL -->
+    <RuleGroup name="FileCreateTime_All" groupRelation="or">
+      <FileCreateTime onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 3: NetworkConnect - ALL -->
+    <RuleGroup name="NetworkConnect_All" groupRelation="or">
+      <NetworkConnect onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 6: DriverLoad - ALL -->
+    <RuleGroup name="DriverLoad_All" groupRelation="or">
+      <DriverLoad onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 8: CreateRemoteThread - ALL -->
+    <RuleGroup name="CreateRemoteThread_All" groupRelation="or">
+      <CreateRemoteThread onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 9: RawAccessRead - ALL -->
+    <RuleGroup name="RawAccessRead_All" groupRelation="or">
+      <RawAccessRead onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 10: ProcessAccess - ONLY lsass.exe or winlogon.exe -->
+    <RuleGroup name="ProcessAccess_Include" groupRelation="or">
+      <ProcessAccess onmatch="include">
+        <TargetImage condition="end with">lsass.exe</TargetImage>
+        <TargetImage condition="end with">winlogon.exe</TargetImage>
+      </ProcessAccess>
+    </RuleGroup>
+
+    <!-- Event 11: FileCreate - \Users, \ProgramData, \Windows\Temp, \Windows\System32\Tasks\ -->
+    <RuleGroup name="FileCreate_Include" groupRelation="or">
+      <FileCreate onmatch="include">
+        <TargetFilename condition="contains">\Users</TargetFilename>
+        <TargetFilename condition="contains">\ProgramData</TargetFilename>
+        <TargetFilename condition="contains">\Windows\Temp</TargetFilename>
+        <TargetFilename condition="contains">\Windows\System32\Tasks\</TargetFilename>
+      </FileCreate>
+    </RuleGroup>
+
+    <!-- Events 12/13/14: RegistryEvent -->
+    <RuleGroup name="RegistryEvent_Include" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <TargetObject condition="contains">\CurrentVersion\Run</TargetObject>
+        <TargetObject condition="contains">\RunOnce</TargetObject>
+        <TargetObject condition="contains">\CurrentControlSet\Services</TargetObject>
+        <TargetObject condition="contains">\Image File Execution Options</TargetObject>
+        <TargetObject condition="contains">\Winlogon</TargetObject>
+        <TargetObject condition="contains">\Lsa\</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- Events 17/18: PipeEvent - ALL -->
+    <RuleGroup name="PipeEvent_All" groupRelation="or">
+      <PipeEvent onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Events 19/20/21: WmiEvent - ALL -->
+    <RuleGroup name="WmiEvent_All" groupRelation="or">
+      <WmiEvent onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 22: DnsQuery - ALL -->
+    <RuleGroup name="DnsQuery_All" groupRelation="or">
+      <DnsQuery onmatch="exclude" />
+    </RuleGroup>
+
+    <!-- Event 25: ProcessTampering - ALL -->
+    <RuleGroup name="ProcessTampering_All" groupRelation="or">
+      <ProcessTampering onmatch="exclude" />
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>
